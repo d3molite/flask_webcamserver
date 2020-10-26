@@ -31,8 +31,9 @@ class Camera:
 
 		while True:
 			ret, frame = self.cap.read()
-			ret, self.eFrame = cv2.imencode('.jpg',frame)
-			self.vFrame = self.eFrame.tobytes()
+			if ret:
+				ret, self.eFrame = cv2.imencode('.jpg',frame)
+				self.vFrame = self.eFrame.tobytes()
 
 	def get(self):
 
