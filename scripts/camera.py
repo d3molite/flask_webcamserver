@@ -2,6 +2,7 @@
 import imutils
 import cv2
 
+
 class Camera:
 
 	def __init__(self, resolution, framerate, device):
@@ -10,7 +11,10 @@ class Camera:
 		self.h = resolution[1]
 
 		# initialize the camera module
-		self.cap = cv2.VideoCapture(device-1)
+		try:
+			self.cap = cv2.VideoCapture(device)
+		except:
+			self.cap = cv2.VideoCapture(device-1)
 
 		# make video 1080p
 		self.cap.set(3, self.w)
@@ -19,18 +23,23 @@ class Camera:
 
 		self.stopped = False
 		self.grabbed = None
+		self.eFrame = None
 		self.vFrame = None
-
-		pass
 
 	# function to push back a jpeg frame to the streaming server
 	def getFrame(self):
 
-		ret, frame = self.cap.read()
-		ret, self.vFrame = cv2.imencode('.jpg',frame)
+		while True:
+			ret, frame = self.cap.read()
+			ret, self.eFrame = cv2.imencode('.jpg',frame)
+			self.vFrame = self.eFrame.tobytes()
 
-		return self.vFrame.tobytes()
+	def get(self):
+
+		return self.vFrame
 
 	def __del__(self):
 
 		self.cap.release()
+
+	
