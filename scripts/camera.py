@@ -12,7 +12,7 @@ class Camera:
 
 		# initialize the camera module
 		try:
-			self.cap = cv2.VideoCapture(device)
+			self.cap = cv2.VideoCapture(device-1)
 		except:
 			self.cap = cv2.VideoCapture(device-1)
 
