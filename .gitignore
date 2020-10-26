@@ -1,0 +1,4 @@
+
+*.code-workspace
+*.pyc
+.vscode/launch.json
