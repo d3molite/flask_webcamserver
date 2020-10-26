@@ -7,13 +7,13 @@ from threading import Thread
 
 class Camera:
 
-	def __init__(self, resolution, framerate):
+	def __init__(self, resolution, framerate, device):
 
 		self.w = resolution[0]
 		self.h = resolution[1]
 
 		# initialize the camera module
-		self.cap = cv2.VideoCapture(0)
+		self.cap = cv2.VideoCapture(device)
 
 		# make video 1080p
 		self.cap.set(3, self.w)
@@ -24,34 +24,37 @@ class Camera:
 		self.grabbed = None
 		self.vFrame = None
 
-		
-
 		pass
-
-	def start(self):
-
-		Thread(target=self.get, args=()).start()
-		
-		return self
-
-	def get(self):
-		while not self.stopped:
-			if not self.grabbed:
-				self.stop()
-			else:
-				self.grabbed, self.frame = self.cap.read()
-				self.vFrame = cv2.imencode('.jpg',self.frame)
-
-	def stop(self):
-		self.stopped = True
 
 	# function to push back a jpeg frame to the streaming server
 	def getFrame(self):
 
-		self.grabbed, self.frame = self.cap.read()
-		self.vFrame = cv2.imencode('.jpg',self.frame)
+		ret, frame = self.cap.read()
+		ret, self.vFrame = cv2.imencode('.jpg',frame)
+
 		return self.vFrame.tobytes()
 
 	def __del__(self):
 
 		self.cap.release()
+
+
+class Thread2:
+
+	def __init__(self):
+
+		self.stopped = False
+		self.frame = None
+
+	def start(self, camera):
+
+		Thread(target=self.get, args=(camera)).start()
+			
+		return self
+
+	def get(self, camera):
+		while not self.stopped:
+			self.frame = camera.getFrame()
+
+	def stop(self):
+		self.stopped = True
