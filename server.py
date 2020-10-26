@@ -2,13 +2,11 @@
 # import the necessary packages
 from flask import Flask, render_template, Response
 from scripts import camera
-import threading
 
 app = Flask(__name__)
 
 # initialize a new camera
 cam = camera.Camera(resolution=[1920,1080], framerate=60, device=0)
-thread = camera.Thread2()
 
 
 @app.route('/')
@@ -29,9 +27,6 @@ def video_feed():
 
 
 if __name__ == '__main__':
-
-	# # start the thread for capturing the images
-	thread.start(camera)
 
     # defining server ip address and port
 	app.run(host='0.0.0.0',port='5000', debug=True, threaded=True)

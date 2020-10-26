@@ -3,8 +3,6 @@ import numpy as np
 import imutils
 import cv2
 
-from threading import Thread
-
 class Camera:
 
 	def __init__(self, resolution, framerate, device):
@@ -37,24 +35,3 @@ class Camera:
 	def __del__(self):
 
 		self.cap.release()
-
-
-class Thread2:
-
-	def __init__(self):
-
-		self.stopped = False
-		self.frame = None
-
-	def start(self, camera):
-
-		Thread(target=self.get, args=(camera)).start()
-			
-		return self
-
-	def get(self, camera):
-		while not self.stopped:
-			self.frame = camera.getFrame()
-
-	def stop(self):
-		self.stopped = True
