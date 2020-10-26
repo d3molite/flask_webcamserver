@@ -14,9 +14,9 @@ class Camera:
 		self.h = resolution[1]
 
 		# initialize the camera module
-		self.cap = cv2.VideoCapture(device)
+		self.cap = cv2.VideoCapture(device-1)
 		self.cap.release()
-		self.cap = cv2.VideoCapture(device)
+		self.cap = cv2.VideoCapture(device-1)
 
 		# make video 1080p
 		self.cap.set(3, self.w)
