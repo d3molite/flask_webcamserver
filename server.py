@@ -1,8 +1,8 @@
 # main.py
 # import the necessary packages
 from flask import Flask, render_template, Response
-import imutils
 import cv2
+import imutils
 
 app = Flask(__name__)
 
@@ -56,7 +56,7 @@ def gen(thread):
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(camera),
+    return Response(gen(cam),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
